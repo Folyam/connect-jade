@@ -15,7 +15,11 @@ Use case:
     connect(
       connectJade({
         root: __dirname + "/views",
-        debug: true
+        debug: true,
+        defaults: {
+          title: "No title"
+          keywords: "node, connect, jade, template"
+        }
       })
     );
 
