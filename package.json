@@ -1,0 +1,30 @@
+{
+  "name": "connect-jade",
+  "version": "0.0.1",
+  "description": "jade plugin for connect",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Yitsushi/connect-jade.git"
+  },
+  "keywords": [
+    "jade",
+    "connect",
+    "plugin"
+  ],
+  "dependencies": {
+    "jade": "0.27.6"
+  },
+  "devDependencies": {
+    "mocha": "1.0.0",
+    "should": "1.2.0",
+    "assert": "0.4.9",
+    "connect": "2.6.1",
+    "urlrouter": "0.2.3"
+  },
+  "author": "Balazs Nadasdi <yitsushi@gmail.com>",
+  "license": "BSD"
+}
