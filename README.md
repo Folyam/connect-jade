@@ -3,7 +3,8 @@ connect-jade
 
 Jade template render helper for connect
 
-Use case:
+Use case
+--------
 
     $ npm install connect-jade
 
@@ -25,3 +26,14 @@ Use case:
 
     // in routes
     res.render('index', { title: 'Index Page', items: items });
+
+Test
+------
+
+**Self:**
+
+    git clone https://github.com/Yitsushi/connect-jade.git
+    cd connect-jade
+    npm test
+
+**Travis:** https://travis-ci.org/#!/Yitsushi/connect-jade
