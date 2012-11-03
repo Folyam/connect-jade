@@ -20,15 +20,32 @@ var router = UrlRouter(function Application(app) {
     res.render("test/extends_with_title", data);
   });
 
-  app.get("/extends-without-title", function extendsWithTitle(req, res) {
+  app.get("/extends-without-title", function extendsWithoutTitle(req, res) {
     if (typeof data.title != "undefined") {
       delete data.title;
     }
     res.render("test/extends_without_title", data);
   });
 
-  app.get("/raw", function extendsWithTitle(req, res) {
+  app.get("/raw", function raw(req, res) {
     res.render("test/raw", data);
+  });
+
+  app.get("/raw-with-dynamic-defaults", function rawWithDynamicDefaults(req, res) {
+    var user = {
+      name: "username",
+      email: "user@email.addr"
+    };
+    res.addVariable('user', user);
+    res.render("test/raw_with_dynamic_defaults", data);
+  });
+
+  app.get("/raw-with-dynamic-defaults-get", function rawWithDynamicDefaultsGet(req, res) {
+    res.render("test/raw_with_dynamic_defaults", data);
+  });
+
+  app.get("/raw-with-helper", function rawWithDynamicHelper(req, res) {
+    res.render("test/raw_with_helper", data);
   });
 });
 
@@ -40,6 +57,21 @@ app.use(connectJade({
     title: "No title"
   }
 }));
+app.use(function addSomeHelper(req, res, next) {
+  if (!res.hasFunction('mailto')) {
+    res.addFunction('mailto', function mailto(user) {
+      return "<a href='mailto:" + user.email + "'>" + user.name + "</a>";
+    });
+  }
+
+  if (!res.hasFunction('antispam')) {
+    res.addFunction('antispam', function antispam(email) {
+      return email.replace(/@/, " {4t} ").replace(/\./, ' _b0t_ ');
+    });
+  }
+
+  next();
+})
 app.use(router);
 
 function testServer (name, fn) {
@@ -87,6 +119,37 @@ suite("connect-jade", function() {
     request.get('/raw', function (res) {
       res.body.should.match(/<h1>28a4e331b5e1dbe2f5264304b9bd8cb7<\/h1>/);
       res.body.should.match(/<p>test content<\/p>/);
+    });
+    request.end(done);
+  });
+
+  test("should render jade with dynamic defaults (part 1)", function(done) {
+    var request = new Request(app);
+    request.get('/raw-with-dynamic-defaults', function (res) {
+      res.body.should.match(/<h1>28a4e331b5e1dbe2f5264304b9bd8cb7<\/h1>/);
+      res.body.should.match(/<p>test content<\/p>/);
+      res.body.should.match(/<p>username:user@email.addr<\/p>/);
+    });
+    request.end(done);
+  });
+
+  test("should render jade with dynamic defaults (part 2)", function(done) {
+    var request = new Request(app);
+    request.get('/raw-with-dynamic-defaults-get', function (res) {
+      res.body.should.match(/<h1>28a4e331b5e1dbe2f5264304b9bd8cb7<\/h1>/);
+      res.body.should.match(/<p>test content<\/p>/);
+      res.body.should.match(/<p>username:user@email.addr<\/p>/);
+    });
+    request.end(done);
+  });
+
+  test("should render jade with helper", function(done) {
+    var request = new Request(app);
+    request.get('/raw-with-helper', function (res) {
+      res.body.should.match(/<h1>28a4e331b5e1dbe2f5264304b9bd8cb7<\/h1>/);
+      res.body.should.match(/<p>test content<\/p>/);
+      res.body.should.match(/<p><a href='mailto:user@email.addr'>username<\/a><\/p>/);
+      res.body.should.match(/<p>username => user {4t} email _b0t_ addr<\/p>/);
     });
     request.end(done);
   });

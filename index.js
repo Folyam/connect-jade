@@ -15,7 +15,8 @@ var jade = require('jade');
 var settings = {
   root: __dirname + '/views',
   layout: 'layout.html',
-  debug: true
+  debug: true,
+  defaults: {}
 };
 
 var cache = {};
@@ -86,6 +87,91 @@ function render(path, locals) {
 }
 
 /**
+ * Add a variable to views like as defaults
+ * These variables available with
+ * $ (dollar sign) prefix
+ *
+ * example:
+ *   var user = { name: "username" };
+ *   res.addVariable('user', user);
+ *
+ *   // view
+ *   $user.name
+ *
+ * @param  {String} name     variable name
+ * @param  {Object} value    value of the variable
+ * @return {Object} [@value]
+ */
+function addVariable(name, value) {
+  settings.defaults['$' + name] = value;
+
+  return value;
+}
+
+/**
+ * Remove a variable from defaults (with $ sign only)
+ *
+ * @param  {String} name     variable name
+ * @return {boolean}
+ */
+function removeVariable(name) {
+  delete settings.defaults['$' + name];
+
+  return true;
+}
+
+/**
+ * Add a function to views like as defaults
+ * These functions available with
+ * _ (underscore) prefix
+ *
+ * example:
+ *   res.addFunction('antispam', function antispam(email) {
+ *     return email.replace(/@/, " [at] ");
+ *   });
+ *
+ *   // view
+ *   _antispam($user.email)
+ *
+ * @param  {String}   name     name of the function
+ * @param  {Function} value    The function
+ * @return {Boolean}
+ */
+function addFunction(name, value) {
+  if (typeof value != "function") {
+    throw "value must be a function";
+    return false;
+  }
+  settings.defaults['_' + name] = value;
+
+  return true;
+}
+
+/**
+ * Remove a function from defaults (with _ sign only)
+ *
+ * @param  {String}   name     name of the function
+ * @return {Boolean}
+ */
+function removeFunction(name) {
+  delete settings.defaults['_' + name];
+
+  return true;
+}
+
+/**
+ * Check for a function (with _ sign only)
+ * If function exists the returns true
+ * else returns false
+ *
+ * @param  {String}   name     name of the function
+ * @return {Boolean}
+ */
+function hasFunction(name) {
+  return (typeof settings.defaults['_' + name] == "function");
+}
+
+/**
  * connect-jade: Template Render helper for connect
  *
  * Use case:
@@ -115,7 +201,14 @@ module.exports = function (options) {
     if (!res.req) {
       res.req = req;
     }
-    res.render = render;
+
+    // TODO: Need to rethink the whole funcionality
+    res.render          = render;
+    res.addVariable     = addVariable;
+    res.removeVariable  = removeVariable;
+    res.addFunction     = addFunction;
+    res.removeFunction  = removeFunction;
+    res.hasFunction     = hasFunction;
     return next();
   };
 };
