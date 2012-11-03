@@ -62,3 +62,13 @@ Jade template render helper for connect
 #### Define functions for view
 
 please check tests [line 60 - addSomeHelper]
+
+### Test
+
+**Self:**
+
+    git clone https://github.com/Yitsushi/connect-jade.git
+    cd connect-jade
+    npm test
+
+**Travis:** https://travis-ci.org/#!/Yitsushi/connect-jade
