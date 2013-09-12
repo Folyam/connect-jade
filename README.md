@@ -63,7 +63,7 @@ Jade template render helper for connect
 
 please check tests [line 60 - addSomeHelper]
 
-### Test
+### Tests
 
 **Self:**
 
