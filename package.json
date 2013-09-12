@@ -8,11 +8,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Yitsushi/connect-jade.git"
+    "url": "https://github.com/Folyam/connect-jade.git"
   },
-  "homepage": "https://github.com/Yitsushi/connect-jade",
+  "homepage": "https://github.com/Folyam/connect-jade",
   "bugs": {
-    "url": "https://github.com/Yitsushi/connect-jade/issues"
+    "url": "https://github.com/Folyam/connect-jade/issues"
   },
   "keywords": [
     "jade",

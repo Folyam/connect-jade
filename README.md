@@ -67,7 +67,7 @@ please check tests [line 60 - addSomeHelper]
 
 **Self:**
 
-    git clone https://github.com/Yitsushi/connect-jade.git
+    git clone https://github.com/Folyam/connect-jade.git
     cd connect-jade
     npm test
 
