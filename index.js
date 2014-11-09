@@ -27,9 +27,12 @@ var cache = {};
  * @param  {String} path    view name.
  * @param  {Object} [locals=null]
  */
-function render(path, locals) {
+function render(path, locals, callback) {
   var res = this;
-  if (typeof locals == "undefined") {
+  if (typeof locals === "undefined" || typeof locals === "function") {
+    if(typeof locals === "function") {
+      callback = locals;
+    }
     locals = settings.defaults;
   } else {
     for (var k in settings.defaults) {
@@ -39,6 +42,11 @@ function render(path, locals) {
     }
   }
   path = settings.root + "/" + path + ".jade";
+  if(callback === undefined) {
+    callback = function(err, html) {
+      return res.end();
+    }
+  }
 
   try {
     fs.realpathSync(path);
@@ -46,7 +54,7 @@ function render(path, locals) {
     // if file doesn't not exist then send 404 error
     // TODO: settings.errorpages.404
     res.writeHead(404);
-    return res.end("404 - not found");
+    return callback(new Error('404 - not found'), "");
   }
 
   // if debug is enabled check cache for view content
@@ -54,7 +62,7 @@ function render(path, locals) {
     var jadeContent = jade.compile(cache[path], {filename: path});
     var html = jadeContent(locals);
     res.write(html);
-    return res.end();
+    return callback(null, html);
   }
 
   // read view content
@@ -66,7 +74,7 @@ function render(path, locals) {
       // if there was any error then send an 500 error
       // TODO: settings.errorpages.500
       res.writeHead(500);
-      return res.end("500 - internal server error");
+     return callback(new Error('500 - internal server error'), "");
     }
 
     res.writeHead(200, { "Content-Type": "text/html" });
@@ -80,7 +88,7 @@ function render(path, locals) {
 
     // send rendered html to the client
     res.write(html);
-    return res.end();
+    return callback(null, html);
   });
 
   return this;
