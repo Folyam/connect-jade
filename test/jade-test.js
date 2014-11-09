@@ -47,6 +47,16 @@ var router = UrlRouter(function Application(app) {
   app.get("/raw-with-helper", function rawWithDynamicHelper(req, res) {
     res.render("test/raw_with_helper", data);
   });
+
+  app.get("/raw-with-callback", function rawWithCallback(req, res) {
+    res.render("test/raw_with_helper", data, function(err, html) {
+      if(err) {
+        throw err;
+      } else {
+        res.end();
+      }
+    });
+  });
 });
 
 var app = Connect();
@@ -150,6 +160,15 @@ suite("connect-jade", function() {
       res.body.should.match(/<p>test content<\/p>/);
       res.body.should.match(/<p><a href='mailto:user@email.addr'>username<\/a><\/p>/);
       res.body.should.match(/<p>username => user {4t} email _b0t_ addr<\/p>/);
+    });
+    request.end(done);
+  });
+
+  test("should render jade and call callback", function(done) {
+    var request = new Request(app);
+    request.get('/raw-with-callback', function (res) {
+      res.body.should.match(/<h1>28a4e331b5e1dbe2f5264304b9bd8cb7<\/h1>/);
+      res.body.should.match(/<p>test content<\/p>/);
     });
     request.end(done);
   });
