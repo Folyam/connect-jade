@@ -22,7 +22,7 @@
     "template"
   ],
   "dependencies": {
-    "jade": "^1.7.0"
+    "jade": "~1.7.0"
   },
   "devDependencies": {
     "connect": "^3.3.2",
