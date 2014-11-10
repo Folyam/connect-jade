@@ -53,6 +53,7 @@ var router = UrlRouter(function Application(app) {
       if(err) {
         throw err;
       } else {
+        res.write(html);
         res.end();
       }
     });

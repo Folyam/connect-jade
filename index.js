@@ -44,7 +44,13 @@ function render(path, locals, callback) {
   path = settings.root + "/" + path + ".jade";
   if(callback === undefined) {
     callback = function(err, html) {
-      return res.end();
+      if(err) {
+        console.log(err);
+        return res.end(err);
+      } else {
+        res.write(html);
+        return res.end();
+      }
     }
   }
 
@@ -74,7 +80,7 @@ function render(path, locals, callback) {
       // if there was any error then send an 500 error
       // TODO: settings.errorpages.500
       res.writeHead(500);
-     return callback(new Error('500 - internal server error'), "");
+      return callback(new Error('500 - internal server error'), "");
     }
 
     res.writeHead(200, { "Content-Type": "text/html" });
@@ -87,7 +93,6 @@ function render(path, locals, callback) {
     var html = jadeContent(locals);
 
     // send rendered html to the client
-    res.write(html);
     return callback(null, html);
   });
 
