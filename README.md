@@ -73,3 +73,8 @@ please check tests [line 60 - addSomeHelper]
     cd connect-jade
     npm test
 
+### Contributors
+
+* Balazs Nadasdi ([@yitsushi](https://github.com/yitsushi))
+* Giacomo Consonni ([@Giaco9](https://github.com/Giaco9))
+
