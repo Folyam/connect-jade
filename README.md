@@ -1,5 +1,7 @@
 # connect-jade
 
+[![Build Status](https://travis-ci.org/Yitsushi/connect-jade.svg)](https://travis-ci.org/Yitsushi/connect-jade)
+
 Jade template render helper for connect
 
 ### Use case:
@@ -71,4 +73,3 @@ please check tests [line 60 - addSomeHelper]
     cd connect-jade
     npm test
 
-**Travis:** https://travis-ci.org/#!/Yitsushi/connect-jade
