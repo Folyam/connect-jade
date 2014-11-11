@@ -25,10 +25,10 @@
     "jade": "~1.7.0"
   },
   "devDependencies": {
-    "connect": "^3.3.2",
-    "mocha": "^2.0.1",
-    "should": "^4.2.1",
-    "urlrouter": "^0.5.4"
+    "connect": "~3.3.2",
+    "mocha": "~2.0.1",
+    "should": "~4.2.1",
+    "urlrouter": "~0.5.4"
   },
   "author": "Balazs Nadasdi <yitsushi@gmail.com>",
   "license": "BSD"
